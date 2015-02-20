@@ -8,8 +8,16 @@
 
 
     [<Test>]
+    //used to enable test discovery in NCrunch
     let ignore_me () = ()
 
     [<Test>]
-    let assert_it_works () =
-        true |> should equal true 
+    let it_can_grab_a_token_from_dictionary () =
+        let expected = " _ "+
+                       " _|"+
+                       "|_ "+
+                       "   "    
+        let actual = grabToken 2
+        actual |> should equal expected
+                        
+                           
