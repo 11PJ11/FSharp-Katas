@@ -17,7 +17,15 @@
                        " _|"+
                        "|_ "+
                        "   "    
-        let actual = grabToken 2
+        let actual = grabToken 2 dictionary
         actual |> should equal expected
                         
-                           
+    [<Test>]                  
+    let it_can_match_a_token () = 
+        let expected = "5"
+        let token = " _ "+
+                    "|_ "+
+                    " _|"+
+                    "   "
+        let actual = matchToken token
+        actual |> should equal expected
