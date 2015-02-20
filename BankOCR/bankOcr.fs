@@ -1,34 +1,36 @@
 ﻿module bankOcr
 
-open System
+    open System
 
-let dictionary =
-    " _     _  _     _  _  _  _  _ " +
-    "| |  | _| _||_||_ |_   ||_||_|" +
-    "|_|  ||_  _|  | _||_|  ||_| _|" +
-    "                              "
+    let dictionary =
+        " _     _  _     _  _  _  _  _ " +
+        "| |  | _| _||_||_ |_   ||_||_|" +
+        "|_|  ||_  _|  | _||_|  ||_| _|" +
+        "                              "
 
-let grabToken i (dict:string) :string=
-    let xStart = i*3
-    let xEnd = xStart + 2
-    let lineLength = dict.Length / 4
-    let token = 
-        seq {for row in 0..3        
-                do yield dict.[(xStart + lineLength * row)..(xEnd + lineLength * row)]}
-        
-    token |> String.Concat
+    let tokenWidth = 3
+    let tokenHeight = 4
 
-let matchToken (token:string) (dict:string) = 
-    let indexes = [0..9]
-    let found = 
-        indexes
-        |> List.tryFind (fun i -> token.Equals(grabToken i dict))
-    if (found.IsSome)
-        then found.Value.ToString()
-    else "?"
+    let grabToken nth (dict:string) :string=        
+        let colStart = nth * tokenWidth
+        let colEnd = (nth + 1) * tokenWidth - 1
+        let rows = [0..tokenHeight - 1]
+        let rowLength = dict.Length / rows.Length        
+        rows
+        |> List.map (fun row -> dict.[(colStart + rowLength * row)..(colEnd + rowLength * row)])
+        |> String.Concat
 
-let readDisplay (display:string) (dict:string) =
-    let digits = display.Length / 12 - 1
-    [0..digits]
-    |> List.map (fun i -> matchToken (grabToken i display) dict)
-    |> String.Concat
+    let matchToken (token:string) (dict:string) = 
+        let positions = [0..9]
+        let found = 
+            positions
+            |> List.tryFind (fun nth -> token.Equals(grabToken nth dict))
+        if (found.IsSome)
+            then found.Value.ToString()
+        else "?"
+
+    let readDisplay (display:string) (dict:string) =
+        let digits = display.Length / (tokenWidth * tokenHeight) - 1
+        [0..digits]
+        |> List.map (fun nth -> matchToken (grabToken nth display) dict)
+        |> String.Concat
