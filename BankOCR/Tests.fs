@@ -29,3 +29,13 @@
                     "   "
         let actual = matchToken token
         actual |> should equal expected
+
+    [<Test>]                  
+    let unmatched_token_returns_question_mark () = 
+        let expected = "?"
+        let token = " _ "+
+                    " _ "+
+                    " _|"+
+                    "   "
+        let actual = matchToken token
+        actual |> should equal expected
