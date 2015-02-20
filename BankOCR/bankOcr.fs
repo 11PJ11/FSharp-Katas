@@ -8,7 +8,6 @@ let dictionary =
     "|_|  ||_  _|  | _||_|  ||_| _|" +
     "                              "
 
-
 let grabToken i (dict:string) :string=
     let xStart = i*3
     let xEnd = xStart + 2

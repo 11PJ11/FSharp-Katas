@@ -61,3 +61,14 @@
             "                           "
         let actual = readDisplay display dictionary
         actual |> should equal expected
+
+    [<Test>]                  
+    let it_can_recognize_a_display_with_a_different_number_of_digits () = 
+        let expected = "8234?6?"
+        let display =
+            " _  _  _     _  _  _ " +
+            "|_| _| _||_||| |_  ||" +
+            "|_||_  _|  | |||_|| |" +
+            "                     "
+        let actual = readDisplay display dictionary
+        actual |> should equal expected
