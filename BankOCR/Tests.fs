@@ -72,3 +72,14 @@
             "                     "
         let actual = readDisplay display dictionary
         actual |> should equal expected
+
+    [<Test>]
+    let it_can_calculate_the_checksum () = 
+        let expected = "valid"
+        let display =
+            "    _  _     _  _  _  _  _ " +
+            "  | _| _||_||| |_  |||_||_|" +
+            "  ||_  _|  | |||_|| ||_| _|" +
+            "                           "
+        let actual = validate display
+        actual |> should equal expected

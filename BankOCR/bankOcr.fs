@@ -34,3 +34,5 @@
         [0..digits]
         |> List.map (fun nth -> matchToken (grabToken nth display) dict)
         |> String.Concat
+
+    let validate display = "invalid"
