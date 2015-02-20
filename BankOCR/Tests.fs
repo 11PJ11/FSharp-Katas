@@ -27,7 +27,7 @@
                     "|_ "+
                     " _|"+
                     "   "
-        let actual = matchToken token
+        let actual = matchToken token dictionary
         actual |> should equal expected
 
     [<Test>]                  
@@ -37,5 +37,27 @@
                     " _ "+
                     " _|"+
                     "   "
-        let actual = matchToken token
+        let actual = matchToken token dictionary
+        actual |> should equal expected
+
+    [<Test>]                  
+    let it_can_recognize_a_display () = 
+        let expected = "123456789"
+        let display =
+            "    _  _     _  _  _  _  _ " +
+            "  | _| _||_||_ |_   ||_||_|" +
+            "  ||_  _|  | _||_|  ||_| _|" +
+            "                           "
+        let actual = readDisplay display dictionary
+        actual |> should equal expected
+
+    [<Test>]                  
+    let it_can_recognize_a_display_with_incomplete_values () = 
+        let expected = "1234?6?89"
+        let display =
+            "    _  _     _  _  _  _  _ " +
+            "  | _| _||_||| |_  |||_||_|" +
+            "  ||_  _|  | |||_|| ||_| _|" +
+            "                           "
+        let actual = readDisplay display dictionary
         actual |> should equal expected

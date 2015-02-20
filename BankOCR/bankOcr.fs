@@ -19,11 +19,17 @@ let grabToken i (dict:string) :string=
         
     token |> String.Concat
 
-let matchToken (token:string) = 
+let matchToken (token:string) (dict:string) = 
     let indexes = [0..9]
     let found = 
         indexes
-        |> List.tryFind (fun i -> token.Equals(grabToken i dictionary))
+        |> List.tryFind (fun i -> token.Equals(grabToken i dict))
     if (found.IsSome)
         then found.Value.ToString()
     else "?"
+
+let readDisplay (display:string) (dict:string) =
+    let digits = display.Length / 12 - 1
+    [0..digits]
+    |> List.map (fun i -> matchToken (grabToken i display) dict)
+    |> String.Concat
