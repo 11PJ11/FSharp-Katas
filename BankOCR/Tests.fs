@@ -6,7 +6,6 @@
     open FsCheck.NUnit
     open FsUnit 
 
-
     [<Test>]
     //used to enable test discovery in NCrunch
     let ignore_me () = ()
@@ -74,12 +73,41 @@
         actual |> should equal expected
 
     [<Test>]
-    let it_can_calculate_the_checksum () = 
+    let it_can_convert_a_string_to_a_list_of_int () =
+        let expected = [1;2;3;4;5;6;7;8;9]
+        let input = "123456789"
+        let actual = input |> fromStringToNums
+        actual |> should equal expected
+
+    [<Test>]
+    let it_can_calculate_a_valid_checksum () = 
         let expected = "valid"
         let display =
             "    _  _     _  _  _  _  _ " +
-            "  | _| _||_||| |_  |||_||_|" +
-            "  ||_  _|  | |||_|| ||_| _|" +
+            "  | _| _||_||_ |_   ||_||_|" +
+            "  ||_  _|  | _||_|  ||_| _|" +
             "                           "
-        let actual = validate display
+        let actual = validate display dictionary
+        actual |> should equal expected
+
+    [<Test>]
+    let it_can_calculate_an_invalid_checksum () = 
+        let expected = "invalid"
+        let display =
+            "    _  _     _  _  _  _  _ " +
+            "  || | _||_||_ |_   ||_||_|" +
+            "  ||_| _|  | _||_|  ||_| _|" +
+            "                           "
+        let actual = validate display dictionary
+        actual |> should equal expected
+
+    [<Test>]
+    let an_incomplete_sequence_is_invalid () = 
+        let expected = "invalid"
+        let display =
+            "    _  _     _  _  _  _  _ " +
+            "  | _| _||_||_ ||   ||_||_|" +
+            "  ||_  _| || _||_| |||_| _|" +
+            "                           "
+        let actual = validate display dictionary
         actual |> should equal expected

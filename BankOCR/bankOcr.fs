@@ -1,15 +1,13 @@
 ﻿module bankOcr
-
     open System
 
+    let tokenWidth = 3
+    let tokenHeight = 4
     let dictionary =
         " _     _  _     _  _  _  _  _ " +
         "| |  | _| _||_||_ |_   ||_||_|" +
         "|_|  ||_  _|  | _||_|  ||_| _|" +
         "                              "
-
-    let tokenWidth = 3
-    let tokenHeight = 4
 
     let grabToken nth (dict:string) :string=        
         let colStart = nth * tokenWidth
@@ -35,4 +33,25 @@
         |> List.map (fun nth -> matchToken (grabToken nth display) dict)
         |> String.Concat
 
-    let validate display = "invalid"
+    let fromStringToNums (code:string) :int list=
+        code 
+        |> Seq.map (fun c -> Int32.Parse(c.ToString()))
+        |> Seq.toList
+
+    let validateChecksum (numbers:int list) = 
+        let checksum = 
+            [1..numbers.Length]
+            |> List.zip (numbers |> List.rev)
+            |> List.map (fun (index, number)-> index*number)
+            |> List.sum 
+        if(checksum % 11 = 0)
+        then "valid"
+        else "invalid"
+
+    let validate (display:string) (dict:string) = 
+        let code = readDisplay display dict
+        if(code.Contains("?"))
+        then "invalid"
+        else 
+            let numbers = code |> fromStringToNums
+            validateChecksum numbers
