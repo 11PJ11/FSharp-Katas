@@ -18,6 +18,31 @@
         |> List.map (fun row -> dict.[(colStart + rowLength * row)..(colEnd + rowLength * row)])
         |> String.Concat
 
+    let toSeqOfInts (numbers:string) :int seq=
+        numbers
+        |> Seq.map (fun char -> Int32.Parse(char.ToString()))
+
+    let mergeToken (tokens:string) (token:string) :string =
+        let tokensWidth = tokens.Length / tokenHeight
+        [0..tokenHeight-1]
+        |> List.map (fun row -> 
+            String.Concat(
+                tokens.[row*tokensWidth..row*tokensWidth + (tokensWidth - 1)],
+                token.[row*tokenWidth ..row*tokenWidth + (tokenWidth - 1)]
+            ))
+        |> String.Concat
+
+    let scanNumbers (numbers: string) (dict: string) :string =
+        numbers.Split('\n')
+        |> Array.filter (fun line -> not(String.IsNullOrEmpty(line)))
+        |> Array.map (fun line -> 
+                          let tokens = line
+                                     |> toSeqOfInts
+                                     |> Seq.map (fun nth -> grabToken nth dict)                                     
+                          tokens
+                          |> Seq.reduce (fun accTokens token -> mergeToken accTokens token ))
+        |> String.Concat
+
     let matchToken (token:string) (dict:string) = 
         let positions = [0..9]
         let found = 
@@ -46,12 +71,12 @@
             |> List.sum 
         if(checksum % 11 = 0)
         then "valid"
-        else "invalid"
+        else "ERR"
 
     let validate (display:string) (dict:string) = 
         let code = readDisplay display dict
         if(code.Contains("?"))
-        then "invalid"
+        then "ILL"
         else 
             let numbers = code |> fromStringToNums
             validateChecksum numbers
