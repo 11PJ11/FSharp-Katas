@@ -148,3 +148,14 @@
             "                           "
         let actual = validate display dictionary
         actual |> should equal expected
+
+//    let intGenerator = Arb.generate<int list>
+//    Gen.sample 9 100
+//
+//    [<Property>]
+//    let read_of_a_scan_is_the_original () =
+//        let original = "123456789"
+//        let readOfScan = readDisplay (scanNumbers original dictionary) dictionary
+//        readOfScan = original
+//    
+//    Check.Quick(read_of_a_scan_is_the_original)

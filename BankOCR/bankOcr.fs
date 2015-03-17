@@ -35,11 +35,10 @@
     let scanNumbers (numbers: string) (dict: string) :string =
         numbers.Split('\n')
         |> Array.filter (fun line -> not(String.IsNullOrEmpty(line)))
-        |> Array.map (fun line -> 
-                          let tokens = line
-                                     |> toSeqOfInts
-                                     |> Seq.map (fun nth -> grabToken nth dict)                                     
-                          tokens
+        |> Array.map (fun line ->                           
+                          line
+                          |> toSeqOfInts
+                          |> Seq.map (fun nth -> grabToken nth dict)                                     
                           |> Seq.reduce (fun accTokens token -> mergeToken accTokens token ))
         |> String.Concat
 
